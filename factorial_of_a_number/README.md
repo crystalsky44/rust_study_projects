@@ -5,7 +5,8 @@ To calculate the factorial of a user input number
 
 **Use:**\
 Enter a number between 1 - 34 after below is prompted:\
-`Input a number to get a factorial!`\
+`Input a number to get a factorial!`
+
 If the input valid, it should output the factorial of the input as below:\
 `factorial of {input} ({input}) is {factorial}!`
 
