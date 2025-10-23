@@ -1,1 +1,1 @@
-# Collections of Small Projects to Mainly Learn Rust
+# Collection of Small Projects to Mainly Learn Rust
