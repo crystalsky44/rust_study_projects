@@ -5,7 +5,7 @@ fn main() {
     let mut input = String::new();
 
     loop {
-        print!("Input a number to get factorial! ");
+        print!("Input a number to get a factorial! ");
         io::stdout()
             .flush()
             .unwrap();
