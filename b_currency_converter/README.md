@@ -7,7 +7,7 @@
 
 ## Usage Image
 
-Pass two abbreviation of currencies as arguments after cargo run to tell the program from what to what should the input be converted to.
+After `cargo run`, pass the number of amount one wants to convert as first argument. Then, pass two abbreviation of currencies as arguments afterwards to tell the program from what to what it should convert. 
 ```
 cargo run -- 100 USD JPY (or '-- 100 usd jpy')
 ```
