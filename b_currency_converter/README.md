@@ -1,7 +1,7 @@
 # Currency Converter
 
 Helps user to convert USD, JPY, EUR against each other
-
+<br>
 
 ## What the Software Can Do
 
