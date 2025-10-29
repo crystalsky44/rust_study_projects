@@ -1,7 +1,7 @@
 use std::io;
 use std::io::Write;
+use std::ops::Mul;
 
-#[derive(Debug)]
 struct UserMoney(f32);
 
 impl UserMoney {
@@ -10,7 +10,7 @@ impl UserMoney {
     }
 }
 
-impl std::ops::Mul<f32> for UserMoney {
+impl Mul<f32> for UserMoney {
     type Output = UserMoney;
 
     fn mul(self, rhs: f32) -> UserMoney {
