@@ -5,9 +5,8 @@ use std::io::Write;
 struct UserMoney(f32);
 
 impl UserMoney {
-    fn truncate_after_hundreth(mut self) -> Self {
+    fn truncate_after_hundreth(&mut self) {
         self.0 = (self.0 * 100.0).trunc() / 100.0;
-        self
     }
 }
 
@@ -26,19 +25,18 @@ fn main() {
 
     user_input(&mut input);
 
-    let user_money = UserMoney(input.trim_end().parse::<f32>().unwrap());
-    // truncate_after_hundreth(&mut user_money);
+    let mut user_money = UserMoney(input.trim_end().parse::<f32>().unwrap());
+    user_money.truncate_after_hundreth();
 
-    let converted = user_money.truncate_after_hundreth() * usd_eur_rate;
-    let result = converted.truncate_after_hundreth();
-    // truncate_after_hundreth(&mut result);
+    let mut converted = user_money * usd_eur_rate;
+    converted.truncate_after_hundreth();
 
-    print!("Converted!\nYou currently have: {}", result.0);
+    print!("Converted!\nYou currently have: {}", converted.0);
 
 }
 
 fn user_input(input: &mut String) {
-    print!("input a number! ");
+    print!("input a number: ");
 
     io::stdout()
         .flush()
