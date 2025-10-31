@@ -1,6 +1,7 @@
-use std::io;
-use std::io::Write;
+// use std::io;
+// use std::io::Write;
 use std::ops::Mul;
+use std::env;
 
 struct UserMoney(f32);
 
@@ -21,11 +22,30 @@ impl Mul<f32> for UserMoney {
 fn main() {
 
     let usd_eur_rate: f32 = 0.86;
-    let mut input = String::new();
+    // let mut input = String::new();
 
-    user_input(&mut input);
+    // user_input(&mut input);
 
-    let mut user_money = UserMoney(input.trim_end().parse::<f32>().unwrap());
+    let mut arg_input = env::args();
+    arg_input.next();
+
+    let Some(user_input) = arg_input.next() else { 
+        println!("No Entry!");
+        return 
+    };
+
+    let mut user_money = match user_input.parse::<f32>() {
+        Ok(number) if number < 1_000_000.0 => UserMoney(number),
+        Ok(_) => {
+            println!("Too Big!");
+            return
+        },
+        Err(_) => { 
+            println!("Not a Number!");
+            return 
+        },
+    };
+
     user_money.truncate_after_hundreth();
 
     let mut converted = user_money * usd_eur_rate;
@@ -35,6 +55,7 @@ fn main() {
 
 }
 
+/*
 fn user_input(input: &mut String) {
     print!("input a number: ");
 
@@ -48,3 +69,4 @@ fn user_input(input: &mut String) {
 
     println!();
 }
+*/
