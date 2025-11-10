@@ -1,72 +1,62 @@
-// use std::io;
-// use std::io::Write;
-use std::ops::Mul;
 use std::env;
-
-struct UserMoney(f32);
-
-impl UserMoney {
-    fn truncate_after_hundreth(&mut self) {
-        self.0 = (self.0 * 100.0).trunc() / 100.0;
-    }
-}
-
-impl Mul<f32> for UserMoney {
-    type Output = UserMoney;
-
-    fn mul(self, rhs: f32) -> UserMoney {
-        UserMoney(self.0 * rhs)
-    }
-}
+use std::collections::HashMap;
+use b_currency_converter::UserMoney;
 
 fn main() {
+    let user_input = user_input_check(
+        env::args()
+    );
 
-    let usd_eur_rate: f32 = 0.86;
-    // let mut input = String::new();
+    run(user_input);
+}
 
-    // user_input(&mut input);
+fn run(user_money: UserMoney) /*-> Result<(), Error>*/ {
 
-    let mut arg_input = env::args();
-    arg_input.next();
+    let converted = converter(user_money);
 
-    let Some(user_input) = arg_input.next() else { 
+    print!("Converted!\nYou currently have: {}", converted.0);
+}
+
+fn user_input_check(mut args: impl Iterator<Item = String>,
+    ) -> UserMoney {
+    args.next();
+
+    let Some(user_input) = args.next() else { 
         println!("No Entry!");
-        return 
+        panic!();
     };
 
-    let mut user_money = match user_input.parse::<f32>() {
+    match user_input.parse::<f32>() {
         Ok(number) if number < 1_000_000.0 => UserMoney(number),
         Ok(_) => {
             println!("Too Big!");
-            return
+            panic!();
         },
         Err(_) => { 
             println!("Not a Number!");
-            return 
+            panic!();
         },
-    };
+    }
+}
 
+fn get_rate() -> f32 {
+    let rates = HashMap::from([
+       ("usd_eur", 0.86),
+        ("usd_jpy", 150.0),
+        ("eur_jpy", 175.0),
+    ]);
+
+    let subject_rate = "usd_eur";
+
+    *rates.get(&subject_rate).unwrap()
+}
+
+fn converter(mut user_money: UserMoney) -> UserMoney {
     user_money.truncate_after_hundreth();
+    let rate = get_rate();
 
-    let mut converted = user_money * usd_eur_rate;
+    let mut converted = user_money * rate;
     converted.truncate_after_hundreth();
 
-    print!("Converted!\nYou currently have: {}", converted.0);
-
+    converted
 }
-
-/*
-fn user_input(input: &mut String) {
-    print!("input a number: ");
-
-    io::stdout()
-        .flush()
-        .unwrap();
-
-    io::stdin()
-        .read_line(input)
-        .unwrap();
-
-    println!();
-}
-*/
