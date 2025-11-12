@@ -41,3 +41,7 @@ $100 is ¥15,000!
 
 * Familiarizing myeslf with `HashMap<K,V>`
 * Getting to know how to use `std::evn::arg`
+
+### Error Handling
+
+* Prints what program couldn't do and tells the user it will shut down
