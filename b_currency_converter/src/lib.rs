@@ -1,5 +1,7 @@
 use std::ops::Mul;
 use std::collections::HashMap;
+use std::fmt;
+use std::error::Error;
 
 pub struct UserMoney(pub f32);
 
@@ -17,6 +19,25 @@ impl Mul<f32> for UserMoney {
     }
 }
 
+#[derive(Debug)]
+pub enum InputError {
+    NoEntry,
+    TooBig,
+    NotNumber,
+}
+
+impl fmt::Display for InputError {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            InputError::NoEntry => write!(f, "no Entry..."),
+            InputError::TooBig => write!(f, "the number is too big..."),
+            InputError::NotNumber => write!(f, "not a number..."),
+        }
+    }
+}
+
+impl Error for InputError {}
+
 pub fn run(user_money: UserMoney) /*-> Result<(), Error>*/ {
 
     let converted = converter(user_money);
@@ -28,21 +49,17 @@ pub fn run(user_money: UserMoney) /*-> Result<(), Error>*/ {
 ///
 /// Will return a &str type, which will be printed at main
 pub fn user_input_check(mut args: impl Iterator<Item = String>,
-    ) -> Result<UserMoney, &'static str> {
+    ) -> Result<UserMoney, InputError> {
     args.next();
 
     let Some(user_input) = args.next() else { 
-        return Err("No Entry...")
+        return Err(InputError::NoEntry)
     };
 
     match user_input.parse::<f32>() {
         Ok(number) if number < 1_000_000.0 => Ok(UserMoney(number)),
-        Ok(_) => {
-            Err("Too big sir...")
-        },
-        Err(_) => { 
-            Err("Not a Number...")
-        },
+        Ok(_) => Err(InputError::TooBig),
+        Err(_) => Err(InputError::NotNumber),
     }
 }
 
