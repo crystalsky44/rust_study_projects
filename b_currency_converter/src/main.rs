@@ -3,7 +3,7 @@ use b_currency_converter::{user_input_check, run};
 
 fn main() {
     if let Err(e) = app() {
-        eprintln!("{}", e);
+        eprintln!("{e}");
     }
 }
 

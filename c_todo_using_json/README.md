@@ -5,7 +5,8 @@
 1. Adds tasks
 2. Marks the tasks "Done"
 3. Modify tasks
-4. Deletes tasks
+4. Delete tasks
+5. Edit Tasks
 
 ## Usage Image
 
