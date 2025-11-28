@@ -1,4 +1,4 @@
-use std::fs::File;
+use std::fs::{File, OpenOptions};
 
 use serde::Serialize;
 use serde_json::ser::Formatter;
@@ -22,13 +22,24 @@ impl Task {
             status: Status::ToDo, 
         };
 
-        let mut file = File::create("test.json").unwrap();
-        
-        task.begin_array(&mut file).unwrap();
+        match File::create_new("test.json") {
+            Ok(mut json_file) => {
+                task.begin_array(&mut json_file).unwrap();
+                serde_json::ser::to_writer_pretty(&json_file, &task).unwrap();
+                task.end_array(&mut json_file).unwrap();
+            }  
 
-        serde_json::ser::to_writer_pretty(&file, &task).unwrap();
+            Err(_) => {
+                let mut json_file = OpenOptions::new()
+                    .append(true)
+                    .open("test.json")
+                    .unwrap();
 
-        task.end_array(&mut file).unwrap();
+                task.begin_array_value(&mut json_file, false).unwrap();
+                serde_json::ser::to_writer_pretty(&json_file, &task).unwrap();
+                task.end_array_value(&mut json_file).unwrap();
+            }
+        }
 
         task
     }
