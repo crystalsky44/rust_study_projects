@@ -16,7 +16,7 @@ pub struct Task {
 }
 
 impl Task {
-    pub fn new(task_title: String) {
+    pub fn new(task_title: String) -> Self {
         let task = task_input(task_title);
         let task_path = "task.json"; // for now, appneding to a specific file
 
