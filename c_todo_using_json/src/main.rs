@@ -1,3 +1,5 @@
+#![warn(clippy::pedantic)]
+
 use std::env;
 use c_todo_using_json::Task;
 use anyhow::Result;
