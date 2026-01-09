@@ -15,9 +15,11 @@ fn main() {
 
 fn run() -> Result<()> {
     let title = env::args().nth(1).ok_or(anyhow::Error)?;
-    let task = Task::new(title);
 
-    task.store("task.json")?;
+    let task = Task::new(title);
+    let storage = get_storage().expect("check directory");
+
+    task.store(storage)?;
 
     Ok(())
 }

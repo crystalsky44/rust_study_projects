@@ -29,9 +29,10 @@ impl Task {
     }
 
     #[cfg(any())]
-    pub fn store(self, storage: impl AsRef<Path>) -> Result<()> { 
+    pub fn store(self, storage: File) -> Result<()> { 
         let writer = BufWriter::new(storage);
-        serde_json::to_writer_pretty(writer, &vec![self])?;
+        let task_list = create_task_vec(self);
+        serde_json::to_writer_pretty(writer, &task_list)?;
 
         Ok(())
     }
@@ -45,12 +46,15 @@ enum Status {
     // Pending,
 }
 
-#[cfg(any())]
-fn check_for_storage() {
-    match File::create_new(&task_path) {
-        Ok(_) => write_task_to_file(task_path, &vec![self])?,
-        Err(_) => None,
-    }
+fn get_storage<P: AsRef<Path>>(path: P) -> Result<File> {
+    let json_file = OpenOptions::new()
+        .read(true)
+        .write(true)
+        .create_new(true)
+        .truncate(true)
+        .open(path)?;
+
+    Ok(json_file)
 }
 
 #[cfg(any())]
@@ -101,5 +105,13 @@ mod tests {
             };
 
             assert_eq!(task, result);
+        }
+        #[test]
+        fn check_file() {
+            let path = "task.json";
+            match get_storage(path) {
+                Ok(_) => println!("Got a file"),
+                Err(_) => println!("didn't get a file")
+            }
         }
 }
