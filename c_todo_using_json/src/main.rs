@@ -1,5 +1,7 @@
 #![warn(clippy::pedantic)]
 
+mod lib;
+
 use std::env;
 use c_todo_using_json::Task;
 use anyhow::Result;
@@ -8,19 +10,20 @@ use anyhow::Result;
 // make sure ask "why" the main might be more idiomatic than one above
 fn main() {
     match run() {
-        Ok(_) => println!("Task added successfully!"),
-        Err(_) => println!("some error") 
+        Ok(_) => println!("Task created successfully!"),
+        Err(_) => println!("some error")
     }
 }
 
 fn run() -> Result<()> {
     let title = env::args().nth(1).ok_or(anyhow::Error)?;
+    let path = // sotrage path
 
     let task = Task::new(title);
-    let storage = get_storage().expect("check directory");
 
-    task.store(storage)?;
+    task.store(path);
 
+    println!("Created task: {task:?}");
     Ok(())
 }
 
@@ -51,7 +54,7 @@ fn main() {
 
 /*
 fn app() -> /* some kind of Result (maybe use thiserror)*/{
-    // some code 
+    // some code
 }
 */
 
@@ -61,7 +64,7 @@ mod another_way {
         // one thing I still wondering, is what do I put in main?
         let arg = env::args().nth(1).unwrap();
         // ideal for above probably is let arg = env::arg().nth(1)?;
-        
+
         let task: Task = Task::new(arg); // this create a "Task" data,
                                          // which is NOT like the one above line
 
@@ -70,5 +73,3 @@ mod another_way {
     }
 }
 */
-
-
