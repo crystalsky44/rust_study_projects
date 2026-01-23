@@ -17,9 +17,9 @@ fn main() {
 
 fn run() -> Result<()> {
     let title = env::args().nth(1).ok_or(anyhow::Error)?;
-    let path = // sotrage path
+    let description = get_user_input("Input description");
 
-    let task = Task::new(title);
+    let task = Task::new(title, description);
 
     task.store(path);
 
@@ -27,7 +27,15 @@ fn run() -> Result<()> {
     Ok(())
 }
 
+fn get_user_input(field: &str) -> String {
+    print!("{field} ");
 
+    let mut input = String::new();
+    io::stdout().flush().unwrap();
+    io::stdin().read_line(&mut input).unwrap();
+
+    input.trim_end().to_string()
+}
 
 
 

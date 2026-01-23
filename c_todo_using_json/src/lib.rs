@@ -19,9 +19,7 @@ pub struct Task {
 }
 
 impl Task {
-    pub fn new(title: String) -> Task {
-        let description = get_user_input("input a description:");
-
+    pub fn new(title: String, description: String) -> Task {
         Task {
             title,
             description,
@@ -112,15 +110,6 @@ fn write_task_to_file(path: impl AsRef<Path>, task_vec: &Vec<Task>) -> Result<()
     Ok(())
 }
 
-fn get_user_input(field: &str) -> String {
-    print!("{field} ");
-
-    let mut input = String::new();
-    io::stdout().flush().unwrap();
-    io::stdin().read_line(&mut input).unwrap();
-
-    input.trim_end().to_string()
-}
 
 #[cfg(test)]
 mod tests {
